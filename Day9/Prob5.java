@@ -15,4 +15,4 @@ public class Prob5 {
             head = head.next;
         }
     }
-}
+}                           
