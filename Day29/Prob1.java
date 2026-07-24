@@ -1,51 +1,59 @@
 package Day29;
-    
-import java.util.*;
+
+   class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
 public class Prob1 {
 
-    public static int findJudge(int n, int[][] trust) {
+    static class Solution {
 
-        int[] inDegree = new int[n + 1];
-        int[] outDegree = new int[n + 1];
+        public ListNode removeNthFromEnd(ListNode head, int n) {
+            ListNode d = new ListNode(0);
+            d.next = head;
 
-        
-        for (int[] t : trust) {
-            outDegree[t[0]]++;
-            inDegree[t[1]]++;
-        }
+            ListNode f = d, s = d;
 
-        
-        for (int i = 1; i <= n; i++) {
-            if (inDegree[i] == n - 1 && outDegree[i] == 0) {
-                return i;
+            for (int i = 0; i <= n; i++)
+                f = f.next;
+
+            while (f != null) {
+                f = f.next;
+                s = s.next;
             }
-        }
 
-        return -1;
+            s.next = s.next.next;
+            return d.next;
+        }
     }
 
     public static void main(String[] args) {
+        ListNode head = new ListNode(1,
+                new ListNode(2,
+                new ListNode(3,
+                new ListNode(4,
+                new ListNode(5)))));
 
-        Scanner sc = new Scanner(System.in);
+        Solution sol = new Solution();
+        head = sol.removeNthFromEnd(head, 2);
 
-        System.out.print("Enter number of people (n): ");
-        int n = sc.nextInt();
-
-        System.out.print("Enter number of trust pairs: ");
-        int m = sc.nextInt();
-
-        int[][] trust = new int[m][2];
-
-        System.out.println("Enter trust pairs (a b):");
-        for (int i = 0; i < m; i++) {
-            trust[i][0] = sc.nextInt();
-            trust[i][1] = sc.nextInt();
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
         }
-
-        int result = findJudge(n, trust);
-
-        System.out.println("Town Judge: " + result);
-
-        sc.close();
     }
-}
+} 
+
+

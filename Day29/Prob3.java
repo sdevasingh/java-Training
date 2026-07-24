@@ -3,65 +3,52 @@ package Day29;
 
 public class Prob3 {
 
-    public static void dfs(char[][] grid, int r, int c) {
+    static class Solution {
 
-        
-        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == '0') {
-            return;
-        }
+        public boolean canFinish(int n, int[][] p) {
 
-       
-        grid[r][c] = '0';
+            List<List<Integer>> g = new ArrayList<>();
 
-        
-        dfs(grid, r + 1, c);
-        dfs(grid, r - 1, c);
-        dfs(grid, r, c + 1);
-        dfs(grid, r, c - 1);
-    }
+            for (int i = 0; i < n; i++)
+                g.add(new ArrayList<Integer>());
 
-    public static int numIslands(char[][] grid) {
+            int[] in = new int[n];
 
-        int count = 0;
+            for (int[] e : p) {
+                g.get(e[1]).add(e[0]);
+                in[e[0]]++;
+            }
 
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
+            Queue<Integer> q = new LinkedList<>();
 
-                if (grid[i][j] == '1') {
-                    count++;
-                    dfs(grid, i, j);
+            for (int i = 0; i < n; i++)
+                if (in[i] == 0)
+                    q.offer(i);
+
+            int count = 0;
+
+            while (!q.isEmpty()) {
+                int x = q.poll();
+                count++;
+
+                for (int y : g.get(x)) {
+                    in[y]--;
+                    if (in[y] == 0)
+                        q.offer(y);
                 }
             }
-        }
 
-        return count;
+            return count == n;
+        }
     }
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        int n = 2;
+        int[][] p = { {1, 0} };
 
-        System.out.print("Enter number of rows: ");
-        int rows = sc.nextInt();
+        Solution s = new Solution();
 
-        System.out.print("Enter number of columns: ");
-        int cols = sc.nextInt();
-
-        char[][] grid = new char[rows][cols];
-
-        System.out.println("Enter the grid (0 or 1):");
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                grid[i][j] = sc.next().charAt(0);
-            }
-        }
-
-        int result = numIslands(grid);
-
-        System.out.println("Number of Islands: " + result);
-
-        sc.close();
+        System.out.println(s.canFinish(n, p));
     }
-}public class NumIslands {
 }
